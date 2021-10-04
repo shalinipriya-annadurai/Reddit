@@ -48,19 +48,19 @@ class FeedViewCell: UITableViewCell {
 
         self.addSubview(tileLabel)
         self.addSubview(thumbnail)
-//        self.addSubview(commentsLabel)
-//        self.addSubview(scoreLabel)
+        self.addSubview(commentsLabel)
+        self.addSubview(scoreLabel)
 
         tileLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 15, paddingBottom: 0, paddingRight: 15, width: frame.size.width, height: 0, enableInsets: false)
         
-        thumbnail.anchor(top: tileLabel.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 5, paddingLeft: 15, paddingBottom: 5, paddingRight: 15, width: 0, height: 0, enableInsets: false)
+        let stackView = UIStackView(arrangedSubviews: [commentsLabel,scoreLabel])
+        stackView.distribution = .equalSpacing
+        stackView.axis = .horizontal
+        stackView.spacing = 5
+        addSubview(stackView)
+        stackView.anchor(top: tileLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 15, width: 0, height: 0, enableInsets: false)
         
-//        let stackView = UIStackView(arrangedSubviews: [commentsLabel,scoreLabel])
-//        stackView.distribution = .equalSpacing
-//        stackView.axis = .horizontal
-//        stackView.spacing = 5
-//        addSubview(stackView)
-//        stackView.anchor(top: thumbnail.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 15, paddingLeft: 5, paddingBottom: 15, paddingRight: 10, width: 0, height: 70, enableInsets: false)
+        thumbnail.anchor(top: stackView.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 15, paddingLeft: 15, paddingBottom: 5, paddingRight: 15, width: 0, height: 0, enableInsets: false)
     }
     
     required init?(coder: NSCoder) {
