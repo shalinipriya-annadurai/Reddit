@@ -10,24 +10,22 @@ import XCTest
 
 class RedditTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testIfViewcontrollerHasTableView() {
+        guard let controller = UIStoryboard(name: "Main", bundle: Bundle(for: ViewController.self)).instantiateInitialViewController() as? ViewController else {
+            return XCTFail("Could not instantiate ViewController from main storyboard")
         }
+        
+        controller.loadViewIfNeeded()
+        XCTAssertNotNil(controller.tableView, "Couln't load tableview")
     }
-
+    
+    func testHomePageDataSource(){
+        guard let controller = UIStoryboard(name: "Main", bundle: Bundle(for: ViewController.self)).instantiateInitialViewController() as? ViewController else {
+            return XCTFail("Could not instantiate ViewController from main storyboard")
+        }
+        
+        controller.loadViewIfNeeded()
+        controller.updateDataSource()
+        XCTAssertTrue(controller.tableView.dataSource is HomePageTableViewDataSource<UITableViewCell, Any>, "TableView's data source should be a HomePageTableViewDataSource")
+    }
 }

@@ -9,13 +9,16 @@ import Foundation
 
 class APIService :  NSObject {
     
-    //private let sourcesURL = URL(string: "https://www.reddit.com/.json")!
+    enum Endpoint: String {
+        case fetchData = "http://www.reddit.com/.json"
+        case fetchMore = "http://www.reddit.com/.json?after="
+    }
     
-    func apiToGetFeeds(completion : @escaping ([Feed]) -> ()){
+    func apiToGetFeeds(endPoint: Endpoint, completion : @escaping ([Feed]) -> ()){
         
         let session = URLSession(configuration: .default)
         
-        guard let url = URL(string:"http://www.reddit.com/.json") else {
+        guard let url = URL(string:endPoint.rawValue) else {
             print("Invalid URL")
             return
         }

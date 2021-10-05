@@ -8,12 +8,11 @@
 import Foundation
 import UIKit
 
-class HomePageTableViewDataSource<cell : UITableViewCell,T> : NSObject, UITableViewDataSource {
+class HomePageTableViewDataSource<cell : UITableViewCell,T> : NSObject, UITableViewDataSource, UITableViewDelegate {
     
     private var cellIdentifier : String!
     private var items : [T]!
     var configureCell : (cell, T) -> () = {_,_ in }
-    
     
     init(cellIdentifier : String, items : [T], configureCell : @escaping (cell, T) -> ()) {
         self.cellIdentifier = cellIdentifier
@@ -26,12 +25,17 @@ class HomePageTableViewDataSource<cell : UITableViewCell,T> : NSObject, UITableV
         return self.items.count
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! cell
         
         let item = self.items[indexPath.row]
         self.configureCell(cell, item)
         return cell
     }
 }
+
+

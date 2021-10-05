@@ -10,6 +10,7 @@ import Foundation
 class FeedsViewModel: NSCoder {
     
     private var apiService: APIService!
+    
     private(set) var feeds = [Feed](){
         didSet{
             bindingFeedstoController()
@@ -19,13 +20,18 @@ class FeedsViewModel: NSCoder {
     override init() {
         super.init()
         self.apiService = APIService()
-       getFeeds()
+        getFeeds()
+    }
+     
+    func getFeeds() {
+        self.apiService.apiToGetFeeds(endPoint: .fetchData) {[weak self] (feeds) in
+            self?.feeds.append(contentsOf: feeds)
+        }
     }
     
-    func getFeeds() {
-        self.apiService.apiToGetFeeds {[weak self] (feeds) in
-            print(feeds)
-            self?.feeds = feeds
+    func getMoreFeeds() {
+        self.apiService.apiToGetFeeds(endPoint: .fetchMore){[weak self] (feeds) in
+            self?.feeds.append(contentsOf: feeds)
         }
     }
 }
