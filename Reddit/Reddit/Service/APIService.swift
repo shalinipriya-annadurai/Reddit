@@ -54,4 +54,35 @@ class APIService :  NSObject {
         }
         task.resume()
     }
+    
+    func apiToGetFeeds1(endPoint: Endpoint, completion : @escaping ([RSSFeed]) -> ()?){
+        
+        let session = URLSession(configuration: .default)
+        
+        guard let url = URL(string:endPoint.rawValue) else {
+            print("Invalid URL")
+            return
+        }
+        let task = session.dataTask(with: url) {(data, response, error) in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            guard let response = response as? HTTPURLResponse,
+                  (200...299).contains(response.statusCode) else {
+                print("BAD Server Response")
+                return
+            }
+            
+            if let data = data {
+                do{
+                    let json = try JSONDecoder().decode([RSSFeed].self, from: data)
+                    completion(json)
+                } catch {
+                    print("Invalid JSON")
+                }
+            }
+        }
+        task.resume()
+    }
 }
